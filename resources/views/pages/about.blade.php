@@ -45,7 +45,7 @@
 
           <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
             <div class="card-body">
-                I am a student currently living in Belgrade(Serbia) and I am on the third year of ICT collage, which is a great school
+                I am a student currently living in Belgrade(Serbia) and I am on the fourth year of ICT collage, which is a great school
                 for learning about internet technologies. Web development is my passion and for now, I created different sites using HTML,
                 CSS, Javascript, jQuery, PHP etc. I've also learned about basic programing with languages like C and C++ and Object-Oriented
                 programming with Java and C#.<br/>

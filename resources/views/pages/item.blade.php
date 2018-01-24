@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="row">
     <div class="col-md-4 picCont">
-      <img class="media-object" src="gallery_small/amer.jpg" alt="amer">
+      <img class="media-object" src="{{ asset($item[$ajdi]->picture) }}" alt="item_picture">
     </div>
     <div class="col-md-7">
       <div id="accordion" role="tablist">
@@ -18,10 +19,7 @@
 
           <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
             <div class="card-body">
-                The Amer Fort, situated in Amber, 11 kilometers from Jaipur, is one of the most famous forts of Rajasthan.
-                Amer, originally, was the capital of the state before Jaipur. It is an old fort, built in 1592 by Raja Man Singh.
-                This fort is also very popularly known as the Amer Palace. The Amer Fort was built in red sandstone and marble and
-                the Maotha Lake adds a certain charm to the entire Fort.
+                {{ $item[$ajdi]->title }}
             </div>
           </div>
         </div>
@@ -35,9 +33,7 @@
           </div>
           <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
             <div class="card-body">
-              The Amer Fort/Palace is a beautiful structure that was built by Raja Man Sing in the 16th century. Don't forget
-                to check out the 'Sheesh Mahal', 'Diwan-i-Aam' and 'Sukh Mahal' also. The fort is a ten minute walk uphill and your
-                little trek will be worth the wonders that it offers. Don't miss the royal elephant ride while you are at it!
+                {{ $item[$ajdi]->title2 }}
             </div>
           </div>
         </div>

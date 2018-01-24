@@ -5,25 +5,24 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                  <li class="nav-item active">
-                    <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/travelgallery">Gallery</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/deals">Deals</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/about">About</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/contact">Contact</a>
-                  </li>
+                    @if(count($nav) > 0)
+                        @foreach($nav as $n)
+                          <li class="nav-item ">
+                            <a class="{{ (Request::url() === $n->url) ? 'nav-link active' : 'nav-link' }}" href="{{ asset($n->title) }}">{{ $n->name }}</a>
+                          </li>
+                        @endforeach
+                    @endif
                 </ul>
                 <ul class="navbar-nav mr-right">
                   @if (Auth::guest())
-                            <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+                            <div class="btn-group">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  Login
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <li><a href="{{ route('login') }}"><button class="dropdown-item" type="button">User login</button></a></li>
+                                <li><a href="{{ route('admin.login') }}"><button class="dropdown-item" type="button">Admin login</button></a></li>
+                            </div></div>
                             <li><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                         @else
                             <div class="btn-group">

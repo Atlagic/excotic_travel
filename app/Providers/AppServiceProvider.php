@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use View;
+use DB;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +17,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+
+        View::composer('*', function($view)
+        {
+            $nav = DB::table('pages')
+                ->select('*')
+                ->get();
+            $view->with('nav', $nav);
+        });
     }
 
     /**

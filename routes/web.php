@@ -15,13 +15,7 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
-//Route::get('/', 'PagesController@index');
-
 Route::get('/home', 'PagesController@home');
-
-//Route::get('/travelgallery', 'PagesController@gallery');
-
-//Route::get('/deals', 'PagesController@deals');
 
 Route::get('/about', 'PagesController@about');
 
@@ -33,12 +27,18 @@ Route::resource('/home', 'DealsController');
 
 Route::resource('/travelgallery', 'GalleryController');
 
-Route::resource('/deals', 'OfferController');
+Route::get('/deals', 'OfferController@index');
 
 Auth::routes();
 
 Route::get('/dashboard', 'DashboardController@index');
 
-Route::get('protected', ['middleware' => ['auth', 'admin'], function() {
-    return "this page requires that you be logged in and an Admin";
-}]);
+Route::prefix('admin')->group(function(){
+    Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
+
+    Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
+
+    Route::get('/', 'AdminController@index')->name('admin.dashboard');
+});
+Route::get('/home/{$id}', 'DealsController@show');
+//Route::get('/orderByAsc', 'OfferController@orderByAsc');

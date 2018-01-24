@@ -13,13 +13,36 @@ class OfferController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $deals = DB::table('deals')
+        if(($search = $request->get('search'))){
+            $deals = DB::table('deals')
+                ->select('*')
+                ->where('place', 'like', '%' .$search . '%')
+                ->orderBy('date','asc')
+                ->paginate(4);
+        }else{
+            $deals = DB::table('deals')
                 ->select('*')
                 ->orderBy('date','asc')
                 ->paginate(4);
-        return view('pages.deals')->with('deals', $deals);
+
+        }
+        if(($filter = $request->get('filter'))){
+            $deals = DB::table('deals')
+                ->select('*')
+                ->orderBy('price','desc')
+                ->paginate(4);
+        }else{
+            $deals = DB::table('deals')
+                ->select('*')
+                ->orderBy('price','asc')
+                ->paginate(4);
+        }
+        return view('pages.deals', [
+            'deals' => $deals
+        ]);
+
     }
 
     /**
@@ -87,4 +110,33 @@ class OfferController extends Controller
     {
         //
     }
+    
+//    public function orderByAsc(){
+//         $asc = DB::table('deals')
+//                ->select('*')
+//                ->limit(6)
+//                ->orderBy('date', 'asc')
+//                ->get();
+//         return view('pages.orderByAsc')->with('asc', $asc);
+//    }
+//
+//    public function orderByDesc(){
+//         $desc = DB::table('deals')
+//                ->select('*')
+//                ->limit(6)
+//                ->orderBy('date', 'desc')
+//                ->get();
+//         return view('pages.deals')->with('desc', $desc);
+//    }
+
+      public function item($id){
+          $id = DB::table('deals')
+              ->select('*')
+              ->get();
+          return view('pages.deals', [
+              'id' => $id
+          ]);
+      }
+
+
 }

@@ -55,7 +55,11 @@ class DealsController extends Controller
      */
     public function show($id)
     {
-        //
+        $ajdi = $id - 1;
+        $item = DB::table('deals')
+            ->select('*')
+            ->get();
+        return view('pages.item',compact('ajdi', 'item'));
     }
 
     /**
@@ -91,4 +95,5 @@ class DealsController extends Controller
     {
         //
     }
+
 }

@@ -5,7 +5,8 @@
     <div class="form-group mx-sm-3 mb-2">
         {!! Form::text('search', Request::get('search'), ['class' => 'form-control', 'placeholder' => 'Search state or city']) !!}
     </div>
-    <button type="submit" class="btn btn-primary mb-2">Search</button> {{-- dve forme trebaju --}}
+    <button type="submit" class="btn btn-primary mb-2">Search</button>
+    {{-- TODO: razdvojiti u dve forme i uraditi filter --}}
     <div class="form-group mx-sm-3 mb-2 mr-right">
         {{ Form::select('filter', [
            'price' => 'Price ...',

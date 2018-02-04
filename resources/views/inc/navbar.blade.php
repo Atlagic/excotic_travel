@@ -8,6 +8,7 @@
                     @if(count($nav) > 0)
                         @foreach($nav as $n)
                           <li class="nav-item ">
+                          {{-- TODO: kako uraditi bez url-a iz baze --}}
                             <a class="{{ (Request::url() === $n->url) ? 'nav-link active' : 'nav-link' }}" href="{{ asset($n->title) }}">{{ $n->name }}</a>
                           </li>
                         @endforeach

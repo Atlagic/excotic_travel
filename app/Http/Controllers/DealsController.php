@@ -19,11 +19,7 @@ class DealsController extends Controller
                 ->select('*')
                 ->limit(6)
                 ->get();
-//        $deals = DB::table('deals')
-//                ->select('*')
-//                ->get();
         return view('pages.home')->with('cards', $cards);
-//        return view('pages.deals')->with('deals', $deals);
     }
 
     /**
@@ -55,11 +51,11 @@ class DealsController extends Controller
      */
     public function show($id)
     {
-        $ajdi = $id - 1;
         $item = DB::table('deals')
             ->select('*')
-            ->get();
-        return view('pages.item',compact('ajdi', 'item'));
+            ->where('idDeal', $id)
+            ->first();
+        return view('pages.item')->with('item', $item);
     }
 
     /**

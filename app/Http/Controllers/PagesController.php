@@ -27,7 +27,7 @@ class PagesController extends Controller
     public function item(){
         return view('pages.item');
     }
-    public function logout(){
-        return view('pages.home');
-    }
+//    public function logout(){
+//        return view('pages.home');
+//    }
 }

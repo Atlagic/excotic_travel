@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-4 picCont">
-      <img class="media-object" src="{{ asset($item[$ajdi]->picture) }}" alt="item_picture">
+      <img class="media-object" src="{{ asset($item->picture) }}" width="300" height="200" alt="item_picture">
     </div>
     <div class="col-md-7">
       <div id="accordion" role="tablist">
@@ -19,7 +19,7 @@
 
           <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
             <div class="card-body">
-                {{ $item[$ajdi]->title }}
+                {{ $item->title }}
             </div>
           </div>
         </div>
@@ -33,7 +33,7 @@
           </div>
           <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
             <div class="card-body">
-                {{ $item[$ajdi]->title2 }}
+                {{ $item->title2 }}
             </div>
           </div>
         </div>
@@ -46,54 +46,60 @@
     </div>
     <div class="row">
       <div class="col-md-12 text-center">
-      <form class="navbar-form" action="index.html" method="post">
+      {!! Form::open(['url' => 'item', 'method' => 'post', 'class' => 'navbar-form', 'role' => 'reserve']) !!}
           <div class="form-row">
             <div class="col-md-4 formContainer">
-              <input class="form-control" type="text" placeholder="Aleksandar" readonly>
+              {!! Form::text('name', Request::get('reserve'), ['class' => 'form-control', 'placeholder' => 'Aleksandar', 'readonly']) !!}
             </div>
           </div>
           <div class="form-row">
             <div class="col-md-4 formContainer">
-              <input class="form-control" type="text" placeholder="Atlagic" readonly>
+              {!! Form::text('lastname', Request::get('reserve'), ['class' => 'form-control', 'placeholder' => 'Atlagic', 'readonly']) !!}
             </div>
           </div>
           <div class="form-row">
             <div class="col-md-4 formContainer">
-              <input class="form-control" type="text" placeholder="Amer Fort, India" readonly>
+              {!! Form::text('place', Request::get('reserve'), ['class' => 'form-control', 'placeholder' => 'Amer Fort, India', 'readonly']) !!}
             </div>
           </div>
           <div class="form-row">
             <div class="col-md-4 formContainer">
-              <input type="date" class="form-control" id="validationCustom02" value placeholder="Polazak" required>
+              {!! Form::date('departure', \Carbon\Carbon::now(), ['class' => 'form-control', 'placeholder' => 'Departure', 'required']) !!}
             </div>
           </div>
           <div class="form-row">
             <div class="col-md-4 formContainer">
-              <input type="date" class="form-control" id="validationCustom02" value="FROM" required>
+              {!! Form::date('return', \Carbon\Carbon::now(), ['class' => 'form-control', 'placeholder' => 'Return', 'required']) !!}
             </div>
           </div>
 
         <div class="form-row">
             <div class="col-md-4 formContainer">
-                <select id="inputState" class="form-control">
-                  <option selected>Kids...</option>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                </select>
+                {{ Form::select('kids', [
+                   'kids' => 'Kids ...',
+                   '0' => '0',
+                   '1' => '1',
+                   '2' => '2',
+                   '3' => '3',
+                   '4' => '4'],
+                   'kids',
+                   ['class' => 'form-control',
+                   'required']
+                ) }}
             </div>
         </div>
         <div class="form-row">
             <div class="col-md-4 formContainer">
-                <select id="inputState" class="form-control">
-                  <option selected>Accommodation...</option>
-                  <option>Hotel</option>
-                  <option>Motel</option>
-                  <option>Hostel</option>
-                  <option>Camping</option>
-                </select>
+                {{ Form::select('accommodation', [
+                   'accommodation' => 'Accommodation...',
+                   '0' => 'Hotel',
+                   '1' => 'Motel',
+                   '2' => 'Hostel',
+                   '3' => 'Camping'],
+                   'accommodation',
+                   ['class' => 'form-control',
+                   'required']
+                ) }}
             </div>
         </div>
         <div class="form-row">
@@ -101,8 +107,7 @@
             <button type="submit" class="btn btn-primary">Reserve</button>
           </div>
         </div>
-
-      </form>
+        {!! Form::close() !!}
     </div>
   </div>
 @endsection

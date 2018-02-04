@@ -25,6 +25,14 @@ class AppServiceProvider extends ServiceProvider
                 ->get();
             $view->with('nav', $nav);
         });
+
+        View::composer('*', function($view)
+        {
+            $adminnav = DB::table('adminpages')
+                ->select('*')
+                ->get();
+            $view->with('adminnav', $adminnav);
+        });
     }
 
     /**

@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-4 picCont">
-      <img class="media-object" src="{{ asset($item->picture) }}" width="300" height="200" alt="item_picture">
+      <img class="media-object" src="{{ asset('storage/pictures/'.$item->picture) }}" width="300" height="200" alt="item_picture">
     </div>
     <div class="col-md-7">
       <div id="accordion" role="tablist">

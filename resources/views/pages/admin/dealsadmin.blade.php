@@ -40,7 +40,7 @@
                             <td>{{ $deal->time }}</td>
                             <td>{{ $deal->price }}</td>
                             <td>{{ date("d/m/y H:i:s", $deal->date) }}</td>
-                            <td><img src="{{ asset($deal->picture)}}" height="100" width="200"/></td>
+                            <td><img src="{{ asset('storage/pictures/'.$deal->picture)}}" height="100" width="200"/></td>
                             <td><a href="edit/dealsadmin/{{ $deal->idDeal }}/editdeal" class="btn btn-default">Update</a></td>
                             <td>
                                 {!! Form::open(['action' => ['AdminController@destroyDeal', $deal->idDeal], 'method' => 'POST', 'id' => 'deleteform', 'class' => 'navbar-form']) !!}

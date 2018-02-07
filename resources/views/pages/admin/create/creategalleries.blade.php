@@ -9,7 +9,7 @@
     </ol>
     <!-- Example DataTables Card-->
     <div class="col-md-12 ">
-        {!! Form::open(['action' => 'AdminController@storeGalleries', 'method' => 'post', 'class' => 'navbar-form', 'role' => 'creategalleries']) !!}
+        {!! Form::open(['action' => 'AdminController@storeGalleries', 'method' => 'post', 'enctype' => 'miltipart/form-data', 'files' => true, 'class' => 'navbar-form', 'role' => 'creategalleries']) !!}
         <div class="form-row">
             <div class="col-md-4 formContainer">
                 {!! Form::label('Small picture upload') !!}

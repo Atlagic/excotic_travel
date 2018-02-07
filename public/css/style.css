@@ -1,7 +1,7 @@
 *{font-family: 'Work Sans', sans-serif;}
 .jumbotron {
   margin-bottom: 0;
-  background: url("../pictures/background.jpeg");
+  background: url("../storage/pictures/background.jpeg");
 }
 .jumbotron h1{
   text-shadow: 2px 2px 10px white;

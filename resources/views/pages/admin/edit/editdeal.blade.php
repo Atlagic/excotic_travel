@@ -9,7 +9,7 @@
     </ol>
     <!-- Example DataTables Card-->
     <div class="col-md-12 ">
-        {!! Form::open(['action' => ['AdminController@updateDeal', $deal->idDeal], Request::get('editdeal'), 'method' => 'post', 'class' => 'navbar-form', 'role' => 'editdeal']) !!}
+        {!! Form::open(['action' => ['AdminController@updateDeal', $deal->idDeal], 'method' => 'post',  'enctype' => 'miltipart/form-data', 'files' => true, 'class' => 'navbar-form', 'role' => 'editdeal']) !!}
         <div class="form-row">
             <div class="col-md-4 formContainer">
                 {!! Form::text('header', $deal->header, ['class' => 'form-control', 'placeholder' => 'Header']) !!}

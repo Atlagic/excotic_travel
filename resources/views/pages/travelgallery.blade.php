@@ -16,7 +16,7 @@
     </div>
     @if(count($pictures) > 0)
         @foreach($pictures as $picture)
-            <div class="col-md-4 zoom"><img data-src="{{$picture->bigPicture}}" src="{{$picture->bigPicture}}" alt="{{$picture->alt}}"/></div>
+            <div class="col-md-4 zoom"><img data-src="{{ asset('storage/pictures/'.$picture->bigPicture) }}" src="{{asset('storage/smallPictures/'.$picture->bigPicture)}}" alt="{{$picture->alt}}"/></div>
         @endforeach
     @endif
 </div>

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Deals;
 use DB;
+use Illuminate\Http\UploadedFile;
 
 class AdminController extends Controller
 {
@@ -109,8 +110,19 @@ class AdminController extends Controller
             'title2' => 'required|max:500',
             'time' => 'required|max:30',
             'price' => 'required|max:20',
-            'picture' => 'required|max:100',
+            'picture' => 'image|mimes:jpg,jpeg,png,gif|max:1999',
         ]);
+
+        if($request->hasFile('picture')){
+            $fileNameWithExt = $request->file('picture')->getClientOriginalName();
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('picture')->getClientOriginalExtension();
+            $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+            $path = $request->file('picture')->storeAs('public/pictures', $fileNameToStore);
+        }else{
+            $fileNameToStore = 'noimage.jpg';
+        }
+
         DB::table('deals')->insertGetId(
             [
                 'header' => $request->input('header'),
@@ -120,7 +132,7 @@ class AdminController extends Controller
                 'time' => $request->input('time'),
                 'price' => $request->input('price'),
                 'date' => Carbon::now()->timestamp,
-                'picture' => $request->input('picture')
+                'picture' => $fileNameToStore
             ]
         );
 
@@ -129,14 +141,33 @@ class AdminController extends Controller
     public function storeGalleries(Request $request)
     {
         $this->validate($request,[
-            'small' => 'required|max:100',
-            'big' => 'required|max:100',
+            'small' => 'image|mimes:jpg,jpeg,png,gif|max:1999',
+            'big' => 'image|mimes:jpg,jpeg,png,gif|max:1999',
             'alt' => 'required|max:50',
         ]);
+        if( $request->hasFile('small') && $request->hasFile('big') ){
+            $fileNameWithExtSmall = $request->file('small')->getClientOriginalName();
+            $fileNameWithExtBig = $request->file('big')->getClientOriginalName();
+
+            $fileNameSmall = pathinfo($fileNameWithExtSmall, PATHINFO_FILENAME);
+            $fileNameBig = pathinfo($fileNameWithExtBig, PATHINFO_FILENAME);
+
+            $extensionSmall = $request->file('small')->getClientOriginalExtension();
+            $extensionBig = $request->file('big')->getClientOriginalExtension();
+
+            $fileNameToStoreSmall = $fileNameSmall.'_'.time().'.'.$extensionSmall;
+            $fileNameToStoreBig = $fileNameBig.'_'.time().'.'.$extensionBig;
+
+            $pathSmall = $request->file('small')->storeAs('public/smallPictures', $fileNameToStoreSmall);
+            $pathBig = $request->file('big')->storeAs('public/pictures', $fileNameToStoreBig);
+        }else{
+            $fileNameToStoreSmall = 'nosmallimage.jpg';
+            $fileNameToStoreBig = 'nobigimage.jpg';
+        }
         DB::table('galleries')->insertGetId(
             [
-                'smallPicture' => $request->input('small'),
-                'bigPicture' => $request->input('big'),
+                'smallPicture' => $fileNameToStoreSmall,
+                'bigPicture' => $fileNameToStoreBig,
                 'alt' => $request->input('alt'),
             ]
         );
@@ -275,14 +306,23 @@ class AdminController extends Controller
     //---------------------- UPDATE METHODS -----------------------//
     public function updateDeal(Request $request, $id){
         $this->validate($request,[
-            'header' => 'require',
-            'place' => 'required',
-            'title' => 'required',
-            'title2' => 'required',
-            'time' => 'required',
-            'price' => 'required',
-            'picture' => 'required',
+            'header' => 'required',
+            'place' => 'required|max:50|regex:/[A-Z]{1,}[a-z]{2,}/',
+            'title' => 'required|max:500',
+            'title2' => 'required|max:500',
+            'time' => 'required|max:30',
+            'price' => 'required|max:20',
+            'picture' => 'image|mimes:jpg,jpeg,png,gif|max:1999',
         ]);
+        if($request->hasFile('picture')){
+            $fileNameWithExt = $request->file('picture')->getClientOriginalName();
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('picture')->getClientOriginalExtension();
+            $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+            $path = $request->file('picture')->storeAs('public/pictures', $fileNameToStore);
+        }else{
+            $fileNameToStore = 'noimage.jpg';
+        }
         DB::table('deals')->where('idDeal', $id)
                           ->update(
             [
@@ -293,7 +333,7 @@ class AdminController extends Controller
                 'time' => $request->input('time'),
                 'price' => $request->input('price'),
                 'date' => Carbon::now()->timestamp,
-                'picture' => $request->input('picture')
+                'picture' => $fileNameToStore
             ]
         );
         return redirect('admin/dealsadmin')->with('success', 'Deal updated successfully!');
@@ -301,15 +341,34 @@ class AdminController extends Controller
     public function updateGalleries(Request $request, $id)
     {
         $this->validate($request,[
-            'small' => 'required',
-            'big' => 'required',
-            'alt' => 'required',
+            'small' => 'image|mimes:jpg,jpeg,png,gif|max:1999',
+            'big' => 'image|mimes:jpg,jpeg,png,gif|max:1999',
+            'alt' => 'required|max:50',
         ]);
+        if( $request->hasFile('small') && $request->hasFile('big') ){
+            $fileNameWithExtSmall = $request->file('small')->getClientOriginalName();
+            $fileNameWithExtBig = $request->file('big')->getClientOriginalName();
+
+            $fileNameSmall = pathinfo($fileNameWithExtSmall, PATHINFO_FILENAME);
+            $fileNameBig = pathinfo($fileNameWithExtBig, PATHINFO_FILENAME);
+
+            $extensionSmall = $request->file('small')->getClientOriginalExtension();
+            $extensionBig = $request->file('big')->getClientOriginalExtension();
+
+            $fileNameToStoreSmall = $fileNameSmall.'_'.time().'.'.$extensionSmall;
+            $fileNameToStoreBig = $fileNameBig.'_'.time().'.'.$extensionBig;
+
+            $pathSmall = $request->file('small')->storeAs('public/smallPictures', $fileNameToStoreSmall);
+            $pathBig = $request->file('big')->storeAs('public/pictures', $fileNameToStoreBig);
+        }else{
+            $fileNameToStoreSmall = 'nosmallimage.jpg';
+            $fileNameToStoreBig = 'nobigimage.jpg';
+        }
         DB::table('galleries')->where('idPicture', $id)
                               ->update(
             [
-                'smallPicture' => $request->input('small'),
-                'bigPicture' => $request->input('big'),
+                'smallPicture' => $fileNameToStoreSmall,
+                'bigPicture' => $fileNameToStoreBig,
                 'alt' => $request->input('alt'),
             ]
         );

@@ -28,8 +28,8 @@
                         @foreach($pictures as $picture)
                             <tr>
                                 <td>{{ $picture->idPicture }}</td>
-                                <td><img src="{{ asset($picture->smallPicture) }}" height="250" width="400"/></td>
-                                <td><img src="{{ asset($picture->bigPicture) }}" height="250" width="400"/></td>
+                                <td><img src="{{ asset('storage/smallPictures/'.$picture->smallPicture) }}" height="250" width="400"/></td>
+                                <td><img src="{{ asset('storage/pictures/'.$picture->bigPicture) }}" height="250" width="400"/></td>
                                 <td>{{ $picture->alt }}</td>
                                 <td><a href="edit/galleriesadmin/{{ $picture->idPicture }}/editgalleries" class="btn btn-default">Update</a></td>
                                 <td>

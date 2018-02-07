@@ -17,6 +17,7 @@ class GalleryController extends Controller
     {
         $pictures = DB::table('galleries')
                 ->select('*')
+                ->take(12)
                 ->get();
         return view('pages.travelgallery')->with('pictures', $pictures);
     }

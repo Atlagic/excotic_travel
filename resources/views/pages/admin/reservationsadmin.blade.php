@@ -25,7 +25,7 @@
                         <th>RETURN</th>
                         <th>KIDS</th>
                         <th>ACCOMMODATION</th>
-                        <th>TIME</th>
+                        <th>CREATED AT</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -40,7 +40,7 @@
                                 <td>{{ $reservation->endDate }}</td>
                                 <td>{{ $reservation->kids }}</td>
                                 <td>{{ $reservation->accommodation }}</td>
-                                <td>{{ date("d/m/y H:i:s", $reservation->time) }}</td>
+                                <td>{{ $reservation->time }}</td>
                                 <td><a href="edit/reservationsadmin/{{ $reservation->idReservation }}/editreservations" class="btn btn-default">Update</a></td>
                                 <td>
                                     {!! Form::open(['action' => ['AdminController@destroyReservations', $reservation->idReservation], 'method' => 'POST', 'id' => 'deleteform', 'class' => 'navbar-form']) !!}

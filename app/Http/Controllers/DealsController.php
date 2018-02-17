@@ -2,94 +2,68 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Http\Controllers\Validator;
 use Illuminate\Http\Request;
-use App\Deals;
+use App\Models\Deals;
 use DB;
 
 class DealsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $cards = DB::table('deals')
-                ->select('*')
-                ->limit(6)
-                ->get();
-        return view('pages.home')->with('cards', $cards);
-    }
+    private $data = [];
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function index(Request $request)
+    {
+        $deals = new Deals();
+        $this->data['deals'] = $deals->getAllDeals();
+
+        return view('pages.deals', $this->data);
+    }
+    public function sort($value){
+        $deals = new Deals();
+        $this->data['deals'] = $deals->sort($value);
+
+        return view('inc.dealsItems', $this->data);
+    }
+    public function search($value){
+        $deals = new Deals();
+        $this->data['deals'] = $deals->search($value);
+        if($this->data['deals']['items'] === NULL){
+            return "We don't have deals for that city or state";
+        }
+        else{
+            return view('inc.dealsItems', $this->data);
+        }
+    }
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $item = DB::table('deals')
-            ->select('*')
-            ->where('idDeal', $id)
-            ->first();
-        return view('pages.item')->with('item', $item);
+        $item = new Deals();
+        $this->data['item'] = $item->item($id);
+        return view('pages.item', $this->data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
     }
-
 }

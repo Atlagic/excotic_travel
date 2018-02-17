@@ -30,7 +30,7 @@
   </div>
   <div class="row">
     <div class="col-md-4 picCont">
-      <img class="media-object" src="{{ asset('pictures/me.jpg') }}" width="300" height="300" alt="amer">
+      <img class="media-object" src="{{ asset('storage/pictures/me.jpg') }}" width="300" height="300" alt="amer">
     </div>
     <div class="col-md-7 mg-right">
       <div id="accordion" role="tablist">

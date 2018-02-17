@@ -41,73 +41,82 @@
     </div></div>
     <div class="row">
       <div class="col-md-12 text-center">
-        <h3 class="reserveTitle">If you want to reserve this tour fill the form bellow</h3>
+          @if (Auth::check())
+          <h3 class="reserveTitle">If you want to reserve this tour fill the form bellow</h3>
+              @else
+              <h3 class="reserveTitle">If you want to reserve this tour please login to fill the form</h3>
+          @endif
       </div>
     </div>
     <div class="row">
       <div class="col-md-12 text-center">
-      {!! Form::open(['url' => 'item', 'method' => 'post', 'class' => 'navbar-form', 'role' => 'reserve']) !!}
-          <div class="form-row">
-            <div class="col-md-4 formContainer">
-              {!! Form::text('name', Request::get('reserve'), ['class' => 'form-control', 'placeholder' => 'Aleksandar', 'readonly']) !!}
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col-md-4 formContainer">
-              {!! Form::text('lastname', Request::get('reserve'), ['class' => 'form-control', 'placeholder' => 'Atlagic', 'readonly']) !!}
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col-md-4 formContainer">
-              {!! Form::text('place', Request::get('reserve'), ['class' => 'form-control', 'placeholder' => 'Amer Fort, India', 'readonly']) !!}
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col-md-4 formContainer">
-              {!! Form::date('departure', \Carbon\Carbon::now(), ['class' => 'form-control', 'placeholder' => 'Departure', 'required']) !!}
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col-md-4 formContainer">
-              {!! Form::date('return', \Carbon\Carbon::now(), ['class' => 'form-control', 'placeholder' => 'Return', 'required']) !!}
-            </div>
-          </div>
+          @if (Auth::check())
+              {!! Form::open(['action' => 'OfferController@store', 'method' => 'post', 'class' => 'navbar-form', 'role' => 'reserve']) !!}
+              {{ csrf_field() }}
+                  <div class="form-row">
+                    <div class="col-md-4 formContainer">
+                      {{ Form::hidden('deal', $item->idDeal) }}
+                      {!! Form::text('name', Auth::user()->name, ['class' => 'form-control', 'readonly']) !!}
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-md-4 formContainer">
+                      {!! Form::text('lastname', Auth::user()->lastname, ['class' => 'form-control', 'readonly']) !!}
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-md-4 formContainer">
+                      {!! Form::text('place', $item->place, ['class' => 'form-control', 'readonly']) !!}
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-md-4 formContainer">
+                      {!! Form::date('departure', \Carbon\Carbon::now(), ['class' => 'form-control', 'placeholder' => 'Departure', 'required']) !!}
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-md-4 formContainer">
+                      {!! Form::date('return', \Carbon\Carbon::now(), ['class' => 'form-control', 'placeholder' => 'Return', 'required']) !!}
+                    </div>
+                  </div>
 
-        <div class="form-row">
-            <div class="col-md-4 formContainer">
-                {{ Form::select('kids', [
-                   'kids' => 'Kids ...',
-                   '0' => '0',
-                   '1' => '1',
-                   '2' => '2',
-                   '3' => '3',
-                   '4' => '4'],
-                   'kids',
-                   ['class' => 'form-control',
-                   'required']
-                ) }}
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-4 formContainer">
-                {{ Form::select('accommodation', [
-                   'accommodation' => 'Accommodation...',
-                   '0' => 'Hotel',
-                   '1' => 'Motel',
-                   '2' => 'Hostel',
-                   '3' => 'Camping'],
-                   'accommodation',
-                   ['class' => 'form-control',
-                   'required']
-                ) }}
-            </div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-2 formContainer">
-            <button type="submit" class="btn btn-primary">Reserve</button>
-          </div>
-        </div>
-        {!! Form::close() !!}
+                <div class="form-row">
+                    <div class="col-md-4 formContainer">
+                        {{ Form::select('kids', [
+                           'kids' => 'Kids ...',
+                           '0' => '0',
+                           '1' => '1',
+                           '2' => '2',
+                           '3' => '3',
+                           '4' => '4'],
+                           'kids',
+                           ['class' => 'form-control',
+                           'required']
+                        ) }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4 formContainer">
+                        {{ Form::select('accommodation', [
+                           'accommodation' => 'Accommodation...',
+                           'Hotel' => 'Hotel',
+                           'Motel' => 'Motel',
+                           'Hostel' => 'Hostel',
+                           'Camping' => 'Camping'],
+                           'accommodation',
+                           ['class' => 'form-control',
+                           'required']
+                        ) }}
+                    </div>
+                </div><br>
+                <div class="form-row">
+                  <div class="col-md-2 formContainer">
+                      {!! Form::submit('Reserve', array('name' => 'reserve', 'class' => 'btn btn-primary')) !!}
+                    {{--<button type="submit" name="reserve" id="reserve" class="btn btn-primary">Reserve</button>--}}
+                  </div>
+                </div>
+                {!! Form::close() !!}
+          @endif
     </div>
   </div>
 @endsection

@@ -6,26 +6,17 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Deals;
+use App\Admin;
 use DB;
 use Illuminate\Http\UploadedFile;
 
 class AdminController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
     public function __construct()
     {
         $this->middleware('auth:admin');
     }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
     //---------------------- ADMIN PAGES -----------------------//
     public function index()
@@ -33,42 +24,46 @@ class AdminController extends Controller
         return view('pages.admin.dashboard');
     }
     public function dealsadmin(){
-        $deals = DB::table('deals')
-            ->select('*')
-            ->get();
-        return view('pages.admin.dealsadmin', [
-            'deals' => $deals
-        ]);
+        $deals = new Admin();
+        $this->data['deals'] = $deals->getDeals();
+
+        return view('pages.admin.dealsadmin', $this->data);
     }
     public function galleriesadmin(){
-        $pictures = DB::table('galleries')
-            ->select('*')
-            ->get();
-        return view('pages.admin.galleriesadmin')->with('pictures', $pictures);
+        $pictures = new Admin();
+        $this->data['pictures'] = $pictures->getGalleries();
+
+        return view('pages.admin.galleriesadmin', $this->data);
     }
     public function pagesadmin(){
-        $pages = DB::table('pages')
-            ->select('*')
-            ->get();
-        return view('pages.admin.pagesadmin')->with('pages', $pages);
+        $pages = new Admin();
+        $this->data['pages'] = $pages->getPages();
+
+        return view('pages.admin.pagesadmin', $this->data);
     }
     public function reservationsadmin(){
-        $reservations = DB::table('reservation')
-            ->select('*')
-            ->get();
-        return view('pages.admin.reservationsadmin')->with('reservations', $reservations);
+        $reservations = new Admin();
+        $this->data['reservations'] = $reservations->getReservations();
+
+        return view('pages.admin.reservationsadmin', $this->data);
     }
     public function usersadmin(){
-        $users = DB::table('users')
-            ->select('*')
-            ->get();
-        return view('pages.admin.usersadmin')->with('users', $users);
+        $users = new Admin();
+        $this->data['users'] = $users->getUsers();
+
+        return view('pages.admin.usersadmin', $this->data);
     }
     public function admins(){
-        $admins = DB::table('admins')
-            ->select('*')
-            ->get();
-        return view('pages.admin.admins')->with('admins', $admins);
+        $admins = new Admin();
+        $this->data['admins'] = $admins->getAdmins();
+
+        return view('pages.admin.admins', $this->data);
+    }
+    public function commentsadmin(){
+        $comments = new Admin();
+        $this->data['comments'] = $comments->getComments();
+
+        return view('pages.admin.commentsadmin', $this->data);
     }
     //------------------------------------------------------------//
 
@@ -98,6 +93,10 @@ class AdminController extends Controller
     {
         return view('pages.admin.create.createadmins');
     }
+    public function createComments()
+    {
+        return view('pages.admin.create.createcomments');
+    }
     //----------------------------------------------------//
 
     //---------------------- INSERT METHODS -----------------------//
@@ -112,7 +111,6 @@ class AdminController extends Controller
             'price' => 'required|max:20',
             'picture' => 'image|mimes:jpg,jpeg,png,gif|max:1999',
         ]);
-
         if($request->hasFile('picture')){
             $fileNameWithExt = $request->file('picture')->getClientOriginalName();
             $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
@@ -255,51 +253,68 @@ class AdminController extends Controller
 
         return redirect('admin/admins')->with('success', 'Admin inserted successfully!');
     }
+    public function storeComments(Request $request)
+    {
+        $this->validate($request,[
+            'content' => 'required|max:200',
+            'deal' => 'required',
+            'user' => 'required',
+        ]);
+        DB::table('comments')->insertGetId(
+            [
+                'content' => $request->input('content'),
+                'idDeal' => $request->input('deal'),
+                'idUser' => $request->input('user'),
+                'ctime' =>  Carbon::now(),
+            ]
+        );
+
+        return redirect('admin/commentsadmin')->with('success', 'Comment inserted successfully!');
+    }
     //-------------------------------------------------------------------------------------//
 
     //---------------------- UPDATE PAGES -----------------------//
     public function editDeal($id){
-        $deal = DB::table('deals')
-            ->select('*')
-            ->where('idDeal', $id)
-            ->first();
-        return view('pages.admin.edit.editdeal')->with('deal', $deal);
+        $deal = new Admin();
+        $this->data['deal'] = $deal->editD($id);
+
+        return view('pages.admin.edit.editdeal', $this->data);
     }
     public function editGalleries($id){
-        $picture = DB::table('galleries')
-            ->select('*')
-            ->where('idPicture', $id)
-            ->first();
-        return view('pages.admin.edit.editgalleries')->with('picture', $picture);
+        $picture = new Admin();
+        $this->data['picture'] = $picture->editG($id);
+
+        return view('pages.admin.edit.editgalleries', $this->data);
     }
     public function editPages($id){
-        $page = DB::table('pages')
-            ->select('*')
-            ->where('idPage', $id)
-            ->first();
+        $page = new Admin();
+        $this->data['page'] = $page->editP($id);
 
-        return view('pages.admin.edit.editpages')->with('page', $page);
+        return view('pages.admin.edit.editpages', $this->data);
     }
     public function editReservations($id){
-        $reservation = DB::table('reservation')
-            ->select('*')
-            ->where('idReservation', $id)
-            ->first();
-        return view('pages.admin.edit.editreservations')->with('reservation', $reservation);
+        $reservation = new Admin();
+        $this->data['reservation'] = $reservation->editR($id);
+
+        return view('pages.admin.edit.editreservations', $this->data);
     }
     public function editUsers($id){
-        $user = DB::table('users')
-            ->select('*')
-            ->where('id', $id)
-            ->first();
-        return view('pages.admin.edit.editusers')->with('user', $user);
+        $user = new Admin();
+        $this->data['user'] = $user->editU($id);
+
+        return view('pages.admin.edit.editusers', $this->data);
     }
     public function editAdmins($id){
-        $admin = DB::table('admins')
-            ->select('*')
-            ->where('id', $id)
-            ->first();
-        return view('pages.admin.edit.editadmins')->with('admin', $admin);
+        $admin = new Admin();
+        $this->data['admin'] = $admin->editA($id);
+
+        return view('pages.admin.edit.editadmins', $this->data);
+    }
+    public function editComments($id){
+        $comment = new Admin();
+        $this->data['comment'] = $comment->editC($id);
+
+        return view('pages.admin.edit.editcomments', $this->data);
     }
     //--------------------------------------------------------------------//
 
@@ -460,6 +475,25 @@ class AdminController extends Controller
 
         return redirect('admin/admins')->with('success', 'Admin updated successfully!');
     }
+    public function updateComments(Request $request, $id)
+    {
+        $this->validate($request,[
+            'content' => 'required|max:200',
+            'deal' => 'required',
+            'user' => 'required',
+        ]);
+        DB::table('comments')->where('idComment', $id)
+            ->update(
+                [
+                    'content' => $request->input('content'),
+                    'idDeal' => $request->input('deal'),
+                    'idUser' => $request->input('user'),
+                    'ctime' =>  Carbon::now(),
+                ]
+            );
+
+        return redirect('admin/commentsadmin')->with('success', 'Comment updated successfully!');
+    }
 
     //------------------------------------------------------------------------------------//
 
@@ -494,6 +528,11 @@ class AdminController extends Controller
         DB::table('admins')->where('id', $id)
             ->delete();
         return redirect('admin/admins')->with('success', 'Admin deleted successfully!');
+    }
+    public function destroyComment($id){
+        DB::table('comments')->where('idComment', $id)
+            ->delete();
+        return redirect('admin/commentsadmin')->with('success', 'Comment deleted successfully!');
     }
 
     //------------------------------------------------------------------------------------//

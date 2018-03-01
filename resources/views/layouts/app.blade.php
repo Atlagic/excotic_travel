@@ -3,18 +3,28 @@
 <head>
     <title>{{ config('app.name', 'Laravel') }}</title>
     <meta charset="utf-8">
+    <meta http-equiv="content-type" content="application/x-httpd-php" charset="utf-8; X-Content-Type-Options=nosniff"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta type="description" content="Our mission is to inspire people to explore excotic places and be the first choice for ET"/>
+    <meta name="keywords" content="travel, agency, excotic, best, buy, offer, deal, destination, reservation, Aleksandar, Atlagic"/>
+    <meta name="author" content="Aleksandar Atlagic">
+    <meta name="web_author" content="Aleksandar Atlagic">
+    <meta name="robots" content="index, follow">
+
+    <link rel="shortcut icon" href="{{ asset('storage/smallPictures/favicon-globe.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('storage/smallPictures/favicon-globe.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Permanent+Marker|Vollkorn" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
     <div class="jumbotron jumbotron-fluid text-center">
         <div class="container">
-          <h1 class="display-4">Excotic Travel</h1>
-          <h3>Our mission is to inspire people to explore excotic places and be the first choice for ET</h3>
+          <h1 class="display-4 exotic">EXCOTIC TRAVEL</h1><br/>
+          <h3 class="mission">Our mission is to inspire people to explore excotic places and be the first choice for ET</h3>
         </div>
       </div>
 

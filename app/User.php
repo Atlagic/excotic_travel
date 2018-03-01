@@ -8,21 +8,17 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
-    
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+
+    public function isAdmin()
+    {
+        return $this->admin; // this looks for an admin column in your users table
+    }
+
     protected $fillable = [
-        'name', 'lastname', 'email', 'password',
+        'name', 'lastname', 'email', 'password', 'admin'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
+
     protected $hidden = [
         'password', 'remember_token',
     ];
@@ -31,8 +27,4 @@ class User extends Authenticatable
 //        'is_admin' => 'boolean',
 //    ];
 //
-//    public function isAdmin()
-//    {
-//        return $this->is_admin;
-//    }
 }

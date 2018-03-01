@@ -27,6 +27,9 @@ class PagesController extends Controller
     public function item(){
         return view('pages.item');
     }
+    public function pagenotfound(){
+        return view('errors.503');
+    }
 //    public function logout(){
 //        return view('pages.home');
 //    }

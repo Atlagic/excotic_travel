@@ -28,7 +28,7 @@ class DealsController extends Controller
     public function search($value){
         $deals = new Deals();
         $this->data['deals'] = $deals->search($value);
-        if($this->data['deals']['items'] === NULL){
+        if($this->data['deals']['total'] === 0){
             return "We don't have deals for that city or state";
         }
         else{

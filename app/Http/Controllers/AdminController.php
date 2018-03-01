@@ -9,6 +9,8 @@ use App\Deals;
 use App\Admin;
 use DB;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
+use Storage;
 
 class AdminController extends Controller
 {
@@ -153,8 +155,8 @@ class AdminController extends Controller
             $extensionSmall = $request->file('small')->getClientOriginalExtension();
             $extensionBig = $request->file('big')->getClientOriginalExtension();
 
-            $fileNameToStoreSmall = $fileNameSmall.'_'.time().'.'.$extensionSmall;
-            $fileNameToStoreBig = $fileNameBig.'_'.time().'.'.$extensionBig;
+            $fileNameToStoreSmall = $fileNameSmall.'.'.$extensionSmall;
+            $fileNameToStoreBig = $fileNameBig.'.'.$extensionBig;
 
             $pathSmall = $request->file('small')->storeAs('public/smallPictures', $fileNameToStoreSmall);
             $pathBig = $request->file('big')->storeAs('public/pictures', $fileNameToStoreBig);
@@ -370,11 +372,15 @@ class AdminController extends Controller
             $extensionSmall = $request->file('small')->getClientOriginalExtension();
             $extensionBig = $request->file('big')->getClientOriginalExtension();
 
-            $fileNameToStoreSmall = $fileNameSmall.'_'.time().'.'.$extensionSmall;
-            $fileNameToStoreBig = $fileNameBig.'_'.time().'.'.$extensionBig;
+            $fileNameToStoreSmall = $fileNameSmall.'.'.$extensionSmall;
+            $fileNameToStoreBig = $fileNameBig.'.'.$extensionBig;
 
             $pathSmall = $request->file('small')->storeAs('public/smallPictures', $fileNameToStoreSmall);
             $pathBig = $request->file('big')->storeAs('public/pictures', $fileNameToStoreBig);
+            if(file_exists($fileNameToStoreSmall && $fileNameToStoreBig)){
+                @unlink($fileNameToStoreSmall);
+                @unlink($fileNameToStoreBig);
+            }
         }else{
             $fileNameToStoreSmall = 'nosmallimage.jpg';
             $fileNameToStoreBig = 'nobigimage.jpg';
@@ -505,6 +511,12 @@ class AdminController extends Controller
         return redirect('admin/dealsadmin')->with('success', 'Deal deleted successfully!');
     }
     public function destroyGalleries($id){
+        $delete = DB::table('galleries')
+            ->select('*')
+            ->where('idPicture', $id)
+            ->first();
+        File::delete(['storage/smallPictures/'.$delete->smallPicture, 'storage/pictures/'.$delete->bigPicture]);
+
         DB::table('galleries')->where('idPicture', $id)
             ->delete();
         return redirect('admin/galleriesadmin')->with('success', 'Gallery deleted successfully!');

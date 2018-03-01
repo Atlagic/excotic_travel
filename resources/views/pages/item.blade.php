@@ -112,7 +112,6 @@
                 <div class="form-row">
                   <div class="col-md-2 formContainer">
                       {!! Form::submit('Reserve', array('name' => 'reserve', 'class' => 'btn btn-primary')) !!}
-                    {{--<button type="submit" name="reserve" id="reserve" class="btn btn-primary">Reserve</button>--}}
                   </div>
                 </div>
                 {!! Form::close() !!}

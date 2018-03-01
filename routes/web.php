@@ -14,25 +14,26 @@ use App\Http\Middleware\Admin;
 Route::get('/', function () {
     return view('auth/login');
 });
-
+Route::get('pagenotfound', ['as' => 'notfound', 'uses' => 'PagesController@pagenotfound']);
 //------------------ PAGES --------------------------//
 Route::get('/home', 'OfferController@index');
 
-Route::get('/home/{id}', 'OfferController@show');
+Route::get('/home/{id}', 'OfferController@show')->where(['id' => '[0-9]+']);
 
 Route::get('/deals', 'DealsController@index');
 
-Route::get('/deals/{id}', 'DealsController@show');
+Route::get('/deals/{id}', 'DealsController@show')->where(['id' => '[0-9]+']);
 
-Route::get('/deals/sort/{value}', 'DealsController@sort');
+Route::get('/deals/sort/{value}', 'DealsController@sort')->where(['value' => '[a-z]+']);
 
-Route::get('/deals/search/{value}', 'DealsController@search');
+Route::get('/deals/search/{value}', 'DealsController@search')->where(['value' => '[a-z]+']);
 
 Route::get('/travelgallery', 'GalleryController@index');
 
 Route::get('/about', 'PagesController@about');
 
 Route::get('/contact', 'PagesController@contact');
+Route::post('contact', 'ContactController@sendEmail')->name('sendEmail');
 
 Route::post('/store', 'OfferController@store')->name('store');
 
@@ -42,7 +43,7 @@ Route::post('/storecomment', 'OfferController@storeComment')->name('storecomment
 
 Auth::routes();
 
-Route::get('/dashboard', 'DashboardController@index');
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
 Route::prefix('admin')->group(function(){
     Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');

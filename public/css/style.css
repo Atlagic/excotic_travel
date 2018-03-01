@@ -2,13 +2,10 @@
 .jumbotron {
   margin-bottom: 0;
   background: url("../storage/pictures/background.jpeg");
-}
-.jumbotron h1{
-  text-shadow: 2px 2px 10px white;
-  color:#01449d;
+    background-size: cover;
 }
 .jumbotron h3{
-  text-shadow: 2px 2px 2px #01449d;
+  text-shadow: 1px 2px 10px #01449d;
   color:white;
 }
 .navbar-brand:hover{
@@ -96,4 +93,33 @@
 footer {
   background-color: #f2f2f2;
   padding: 25px;
+}
+.exotic{
+  text-shadow: 2px 2px 10px white;
+  color:#01449d;
+  font-family: 'Permanent Marker', cursive;
+  font-size:66px;
+  font-weight:bolder;
+}
+.mission{
+  font-size: 25px;
+}
+.et{
+  font-family: 'Permanent Marker', cursive;
+}
+.four0four{
+  display:block;
+  width: 550px;
+  height: 370px;
+  margin: 0 auto;
+}
+.bc404{
+    background-color: #f5f5f5;
+}
+.hajedan{
+    text-align: center;
+    color:#888888;
+}
+.hajedan a{
+    text-decoration: none;
 }

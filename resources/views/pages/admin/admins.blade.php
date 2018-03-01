@@ -1,4 +1,4 @@
-@extends('layouts.admintemplate')
+    @extends('layouts.admintemplate')
 
 @section('content')
     <ol class="breadcrumb">

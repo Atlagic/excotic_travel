@@ -30,14 +30,13 @@ Aleksandar Atlagić 93/14
 
 <br/><br/><br/><br/>   
 1.Opis funkcionalnosti<br/>
-2. Skica struktura stranica	<br/>
-3. Dijagram baze podataka	<br/>
-3.MVC Organizacija	<br/>
+2.Template<br/>
+3. Skica struktura stranica	<br/>
+4. Dijagram baze podataka	<br/>
+5. Klasni dijagram
 &nbsp;&nbsp;&nbsp;&nbsp;Kontroleri	<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;Modeli	<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;View	<br/>
-4. javaScript kod	<br/>
-5. PHP kod	<br/>
  <br/><br/><br/><br/>
 <b>1.Opis funkcionalnosti</b>
 <br/><br/>
@@ -63,3 +62,38 @@ Aleksandar Atlagić 93/14
 -Custom 404 page not found error page (/resources/views/errors/503.blade.php, /app/Http/Controllers/PageController.php)
 
 -Sve forme su validirane, svi izuzeci su obrađeni i zapisuju se u log file, ceo sadržaj sajta je dinamičan i povlači se iz baze podataka.
+<br/><br/><br/><br/> 
+-Use case dijagram 
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/pictures/UseCaseDijagram.jpg"/></p>
+<br/><br/><br/><br/> 
+-Koriščeni jezici: HTML5, CSS3, JavaScript, PHP <br/>
+-Korišćeni HTML framework: https://getbootstrap.com 
+-Koriščene biblioteke: https://code.jquery.com/jquery-3.2.1.slim.min.js, https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js,
+https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js
+<br/><br/><br/><br/> 
+<b>2.Template</b>
+<br/><br/> 
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/pictures/wireframe.jpg"/></p>
+<br/><br/> 
+<b>3. Skica struktura stranica</b>	<br/>
+<br/><br/> 
+-Deals admin
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/screenshots/dealsadmin.png"/></p>
+-Gallery admin
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/screenshots/galleryadmin.png"/></p>
+-Pages admin
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/screenshots/pagesadmin.png"/></p>
+-Reservations admin
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/screenshots/reservationsadmin.png"/></p>
+-Users admin
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/screenshots/usersadmin.png"/></p>
+-Admins admin
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/screenshots/admin.png"/></p>
+-Comments admin
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/screenshots/commentsadmin.png"/></p>
+<b>4. Dijagram baze podataka</b>	<br/>
+<br/><br/> 
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/pictures/database.jpg"/></p>
+<br/><br/><br/> 
+<b>5.Klasni dijagram</b> (kliknite na sliku kako biste uvećali)
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/pictures/ClassDiagram.jpg"/></p>

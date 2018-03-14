@@ -33,10 +33,8 @@ Aleksandar Atlagić 93/14
 2.Template<br/>
 3. Skica struktura stranica	<br/>
 4. Dijagram baze podataka	<br/>
-5. Klasni dijagram
-&nbsp;&nbsp;&nbsp;&nbsp;Kontroleri	<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;Modeli	<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;View	<br/>
+5. Klasni dijagram<br/>
+6.View-ovi
  <br/><br/><br/><br/>
 <b>1.Opis funkcionalnosti</b>
 <br/><br/>
@@ -97,3 +95,5 @@ https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js
 <br/><br/><br/> 
 <b>5.Klasni dijagram</b> (kliknite na sliku kako biste uvećali)
 <p align="center"><img src="https://excotictravel.000webhostapp.com/storage/pictures/ClassDiagram.jpg"/></p>
+<b>6.View-ovi</b> 
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/pictures/views.jpg"/></p>

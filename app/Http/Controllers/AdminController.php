@@ -14,7 +14,6 @@ use Storage;
 
 class AdminController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth:admin');
@@ -23,7 +22,10 @@ class AdminController extends Controller
     //---------------------- ADMIN PAGES -----------------------//
     public function index()
     {
-        return view('pages.admin.dashboard');
+        $activity = new Admin();
+        $this->data['logs'] = $activity->getLogs();
+
+        return view('pages.admin.dashboard', $this->data);
     }
     public function dealsadmin(){
         $deals = new Admin();
@@ -122,21 +124,29 @@ class AdminController extends Controller
         }else{
             $fileNameToStore = 'noimage.jpg';
         }
-
-        DB::table('deals')->insertGetId(
-            [
-                'header' => $request->input('header'),
-                'place' => $request->input('place'),
-                'title' => $request->input('title'),
-                'title2' => $request->input('title2'),
-                'time' => $request->input('time'),
-                'price' => $request->input('price'),
-                'date' => Carbon::now()->timestamp,
-                'picture' => $fileNameToStore
-            ]
-        );
-
-        return redirect('admin/dealsadmin')->with('success', 'Deal created successfully!');
+        try{
+            DB::table('deals')->insertGetId(
+                [
+                    'header' => $request->input('header'),
+                    'place' => $request->input('place'),
+                    'title' => $request->input('title'),
+                    'title2' => $request->input('title2'),
+                    'time' => $request->input('time'),
+                    'price' => $request->input('price'),
+                    'date' => Carbon::now()->timestamp,
+                    'picture' => $fileNameToStore
+                ]
+            );
+            return redirect('admin/dealsadmin')->with('success', 'Deal created successfully!');
+        }
+        catch(\Symfony\Component\HttpFoundation\File\Exception\FileException $ex) {
+            \Log::error('Problem sa fajlom!! '.$ex->getMessage());
+            return redirect()->back()->with('error','Greska pri dodavanju slike!');
+        }
+        catch(\ErrorException $ex) {
+            \Log::error('Problem sa fajlom!! '.$ex->getMessage());
+            return redirect()->back()->with('error','Doslo je do greske!');
+        }
     }
     public function storeGalleries(Request $request)
     {
@@ -160,19 +170,35 @@ class AdminController extends Controller
 
             $pathSmall = $request->file('small')->storeAs('public/smallPictures', $fileNameToStoreSmall);
             $pathBig = $request->file('big')->storeAs('public/pictures', $fileNameToStoreBig);
+
+            if(file_exists($fileNameToStoreSmall && $fileNameToStoreBig)){
+                @unlink($fileNameToStoreSmall);
+                @unlink($fileNameToStoreBig);
+            }
         }else{
             $fileNameToStoreSmall = 'nosmallimage.jpg';
             $fileNameToStoreBig = 'nobigimage.jpg';
         }
-        DB::table('galleries')->insertGetId(
-            [
-                'smallPicture' => $fileNameToStoreSmall,
-                'bigPicture' => $fileNameToStoreBig,
-                'alt' => $request->input('alt'),
-            ]
-        );
+        try{
+            DB::table('galleries')->insertGetId(
+                [
+                    'smallPicture' => $fileNameToStoreSmall,
+                    'bigPicture' => $fileNameToStoreBig,
+                    'alt' => $request->input('alt'),
+                ]
+            );
 
-        return redirect('admin/galleriesadmin')->with('success', 'Picture inserted successfully!');
+            return redirect('admin/galleriesadmin')->with('success', 'Picture inserted successfully!');
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+            \Log::error($ex->getMessage());
+            return redirect()->back()->with('error','Greska pri dodavanju galerije u bazu');
+        }
+        catch(\ErrorException $ex) {
+            \Log::error('Problem sa fajlom!! '.$ex->getMessage());
+            return redirect()->back()->with('error','Doslo je do greske!');
+        }
+
     }
     public function storePages(Request $request)
     {
@@ -181,15 +207,21 @@ class AdminController extends Controller
             'title' => 'required|max:20',
             'url' => 'required|max:50|active_url',
         ]);
-        DB::table('pages')->insertGetId(
-            [
-                'name' => $request->input('name'),
-                'title' => $request->input('title'),
-                'url' => $request->input('url'),
-            ]
-        );
+        try{
+            DB::table('pages')->insertGetId(
+                [
+                    'name' => $request->input('name'),
+                    'title' => $request->input('title'),
+                    'url' => $request->input('url'),
+                ]
+            );
 
-        return redirect('admin/pagesadmin')->with('success', 'Page inserted successfully!');
+            return redirect('admin/pagesadmin')->with('success', 'Page inserted successfully!');
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+            \Log::error($ex->getMessage());
+            return redirect()->back()->with('error','Greska pri dodavanju stranice u bazu');
+        }
     }
     public function storeReservations(Request $request)
     {
@@ -202,20 +234,30 @@ class AdminController extends Controller
             'kids' => 'required|max:10|not_in:kids',
             'accommodation' => 'required|max:20|not_in:accommodation',
         ]);
-        DB::table('reservation')->insertGetId(
-            [
-                'firstName' => $request->input('name'),
-                'lastName' => $request->input('lastname'),
-                'place' => $request->input('place'),
-                'startDate' => $request->input('departure'),
-                'endDate' => $request->input('return'),
-                'kids' => $request->input('kids'),
-                'accommodation' => $request->input('accommodation'),
-                'time' => Carbon::now()->timestamp
-            ]
-        );
+        try{
+            DB::table('reservation')->insertGetId(
+                [
+                    'firstName' => $request->input('name'),
+                    'lastName' => $request->input('lastname'),
+                    'place' => $request->input('place'),
+                    'startDate' => $request->input('departure'),
+                    'endDate' => $request->input('return'),
+                    'kids' => $request->input('kids'),
+                    'accommodation' => $request->input('accommodation'),
+                    'time' => Carbon::now()->timestamp
+                ]
+            );
 
-        return redirect('admin/reservationsadmin')->with('success', 'Reservation inserted successfully!');
+            return redirect('admin/reservationsadmin')->with('success', 'Reservation inserted successfully!');
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+            \Log::error($ex->getMessage());
+            return redirect()->back()->with('error','Greska pri dodavanju rezervacije u bazu');
+        }
+        catch(\ErrorException $ex) {
+            \Log::error('Problem sa rezervaciom!! '.$ex->getMessage());
+            return redirect()->back()->with('error','Doslo je do greske!');
+        }
     }
     public function storeUsers(Request $request)
     {
@@ -225,16 +267,26 @@ class AdminController extends Controller
             'email' => 'required|email',
             'password' => 'required|max:190',
         ]);
-        DB::table('users')->insertGetId(
-            [
-                'name' => $request->input('name'),
-                'lastName' => $request->input('lastname'),
-                'email' => $request->input('email'),
-                'password' =>  Hash::make($request->input('password')),
-            ]
-        );
+        try{
+            DB::table('users')->insertGetId(
+                [
+                    'name' => $request->input('name'),
+                    'lastName' => $request->input('lastname'),
+                    'email' => $request->input('email'),
+                    'password' =>  Hash::make($request->input('password')),
+                ]
+            );
 
-        return redirect('admin/usersadmin')->with('success', 'User inserted successfully!');
+            return redirect('admin/usersadmin')->with('success', 'User inserted successfully!');
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+            \Log::error($ex->getMessage());
+            return redirect()->back()->with('error','Greska pri dodavanju korisnika u bazu');
+        }
+        catch(\ErrorException $ex) {
+            \Log::error('Problem sa korisnicima!! '.$ex->getMessage());
+            return redirect()->back()->with('error','Doslo je do greske!');
+        }
     }
     public function storeAdmins(Request $request)
     {
@@ -244,16 +296,26 @@ class AdminController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-        DB::table('admins')->insertGetId(
-            [
-                'name' => $request->input('name'),
-                'lastName' => $request->input('lastname'),
-                'email' => $request->input('email'),
-                'password' =>  Hash::make($request->input('password')),
-            ]
-        );
+        try{
+            DB::table('admins')->insertGetId(
+                [
+                    'name' => $request->input('name'),
+                    'lastName' => $request->input('lastname'),
+                    'email' => $request->input('email'),
+                    'password' =>  Hash::make($request->input('password')),
+                ]
+            );
 
-        return redirect('admin/admins')->with('success', 'Admin inserted successfully!');
+            return redirect('admin/admins')->with('success', 'Admin inserted successfully!');
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+        \Log::error($ex->getMessage());
+        return redirect()->back()->with('error','Greska pri dodavanju admina u bazu');
+        }
+        catch(\ErrorException $ex) {
+        \Log::error('Problem sa korisnicima!! '.$ex->getMessage());
+        return redirect()->back()->with('error','Doslo je do greske!');
+         }
     }
     public function storeComments(Request $request)
     {
@@ -262,16 +324,26 @@ class AdminController extends Controller
             'deal' => 'required',
             'user' => 'required',
         ]);
-        DB::table('comments')->insertGetId(
-            [
-                'content' => $request->input('content'),
-                'idDeal' => $request->input('deal'),
-                'idUser' => $request->input('user'),
-                'ctime' =>  Carbon::now(),
-            ]
-        );
+        try{
+            DB::table('comments')->insertGetId(
+                [
+                    'content' => $request->input('content'),
+                    'idDeal' => $request->input('deal'),
+                    'idUser' => $request->input('user'),
+                    'ctime' =>  Carbon::now(),
+                ]
+            );
 
-        return redirect('admin/commentsadmin')->with('success', 'Comment inserted successfully!');
+            return redirect('admin/commentsadmin')->with('success', 'Comment inserted successfully!');
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+            \Log::error($ex->getMessage());
+            return redirect()->back()->with('error','Greska pri dodavanju komentara u bazu');
+        }
+        catch(\ErrorException $ex) {
+            \Log::error('Problem sa korisnicima!! '.$ex->getMessage());
+            return redirect()->back()->with('error','Doslo je do greske!');
+        }
     }
     //-------------------------------------------------------------------------------------//
 
@@ -340,20 +412,30 @@ class AdminController extends Controller
         }else{
             $fileNameToStore = 'noimage.jpg';
         }
-        DB::table('deals')->where('idDeal', $id)
-                          ->update(
-            [
-                'header' => $request->input('header'),
-                'place' => $request->input('place'),
-                'title' => $request->input('title'),
-                'title2' => $request->input('title2'),
-                'time' => $request->input('time'),
-                'price' => $request->input('price'),
-                'date' => Carbon::now()->timestamp,
-                'picture' => $fileNameToStore
-            ]
-        );
-        return redirect('admin/dealsadmin')->with('success', 'Deal updated successfully!');
+        try{
+            DB::table('deals')->where('idDeal', $id)
+                              ->update(
+                [
+                    'header' => $request->input('header'),
+                    'place' => $request->input('place'),
+                    'title' => $request->input('title'),
+                    'title2' => $request->input('title2'),
+                    'time' => $request->input('time'),
+                    'price' => $request->input('price'),
+                    'date' => Carbon::now()->timestamp,
+                    'picture' => $fileNameToStore
+                ]
+            );
+            return redirect('admin/dealsadmin')->with('success', 'Deal updated successfully!');
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+            \Log::error($ex->getMessage());
+            return redirect()->back()->with('error','Greska pri azuriranju posta u bazu');
+        }
+        catch(\ErrorException $ex) {
+            \Log::error('Problem sa postom!! '.$ex->getMessage());
+            return redirect()->back()->with('error','Doslo je do greske!');
+        }
     }
     public function updateGalleries(Request $request, $id)
     {
@@ -385,16 +467,30 @@ class AdminController extends Controller
             $fileNameToStoreSmall = 'nosmallimage.jpg';
             $fileNameToStoreBig = 'nobigimage.jpg';
         }
-        DB::table('galleries')->where('idPicture', $id)
-                              ->update(
-            [
-                'smallPicture' => $fileNameToStoreSmall,
-                'bigPicture' => $fileNameToStoreBig,
-                'alt' => $request->input('alt'),
-            ]
-        );
+        try{
+            DB::table('galleries')->where('idPicture', $id)
+                                  ->update(
+                [
+                    'smallPicture' => $fileNameToStoreSmall,
+                    'bigPicture' => $fileNameToStoreBig,
+                    'alt' => $request->input('alt'),
+                ]
+            );
 
-        return redirect('admin/galleriesadmin')->with('success', 'Picture updated successfully!');
+            return redirect('admin/galleriesadmin')->with('success', 'Picture updated successfully!');
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+            \Log::error($ex->getMessage());
+            return redirect()->back()->with('error','Greska pri azuriranju galerije u bazu');
+        }
+        catch(\Symfony\Component\HttpFoundation\File\Exception\FileException $ex) { // greske sa fajlom
+            \Log::error('Problem sa fajlom!! '.$ex->getMessage());
+            return redirect()->back()->with('error','Greska pri dodavanju slike!');
+        }
+        catch(\ErrorException $ex) {
+            \Log::error('Problem sa galerijom!! '.$ex->getMessage());
+            return redirect()->back()->with('error','Doslo je do greske!');
+        }
     }
     public function updatePages(Request $request, $id)
     {
@@ -403,16 +499,27 @@ class AdminController extends Controller
             'title' => 'required',
             'url' => 'required',
         ]);
-        DB::table('pages')->where('idPage', $id)
-            ->update(
-            [
-                'name' => $request->input('name'),
-                'title' => $request->input('title'),
-                'url' => $request->input('url'),
-            ]
-        );
+        try{
+            DB::table('pages')->where('idPage', $id)
+                ->update(
+                [
+                    'name' => $request->input('name'),
+                    'title' => $request->input('title'),
+                    'url' => $request->input('url'),
+                ]
+            );
 
-        return redirect('admin/pagesadmin')->with('success', 'Page updated successfully!');
+            return redirect('admin/pagesadmin')->with('success', 'Page updated successfully!');
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+            \Log::error($ex->getMessage());
+            return redirect()->back()->with('error','Greska pri azuriranju stranice u bazu');
+        }
+        catch(\ErrorException $ex) {
+            \Log::error('Problem sa stranicama!! '.$ex->getMessage());
+            return redirect()->back()->with('error','Doslo je do greske!');
+        }
+
     }
     public function updateReservations(Request $request, $id)
     {
@@ -425,21 +532,31 @@ class AdminController extends Controller
             'kids' => 'required',
             'accommodation' => 'required',
         ]);
-        DB::table('reservation')->where('idReservation', $id)
-            ->update(
-            [
-                'firstName' => $request->input('name'),
-                'lastName' => $request->input('lastname'),
-                'place' => $request->input('place'),
-                'startDate' => $request->input('departure'),
-                'endDate' => $request->input('return'),
-                'kids' => $request->input('kids'),
-                'accommodation' => $request->input('accommodation'),
-                'time' => Carbon::now()->timestamp
-            ]
-        );
+        try{
+            DB::table('reservation')->where('idReservation', $id)
+                ->update(
+                [
+                    'firstName' => $request->input('name'),
+                    'lastName' => $request->input('lastname'),
+                    'place' => $request->input('place'),
+                    'startDate' => $request->input('departure'),
+                    'endDate' => $request->input('return'),
+                    'kids' => $request->input('kids'),
+                    'accommodation' => $request->input('accommodation'),
+                    'time' => Carbon::now()->timestamp
+                ]
+            );
 
-        return redirect('admin/reservationsadmin')->with('success', 'Reservation updated successfully!');
+            return redirect('admin/reservationsadmin')->with('success', 'Reservation updated successfully!');
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+            \Log::error($ex->getMessage());
+            return redirect()->back()->with('error','Greska pri azuriranju rezervacije u bazu');
+        }
+        catch(\ErrorException $ex) {
+            \Log::error('Problem sa rezervaciom!! '.$ex->getMessage());
+            return redirect()->back()->with('error','Doslo je do greske!');
+        }
     }
     public function updateUsers(Request $request, $id)
     {
@@ -449,17 +566,27 @@ class AdminController extends Controller
             'email' => 'required',
             'password' => 'required',
         ]);
-        DB::table('users')->where('id', $id)
-            ->update(
-            [
-                'name' => $request->input('name'),
-                'lastName' => $request->input('lastname'),
-                'email' => $request->input('email'),
-                'password' =>  Hash::make($request->input('password')),
-            ]
-        );
+        try{
+            DB::table('users')->where('id', $id)
+                ->update(
+                [
+                    'name' => $request->input('name'),
+                    'lastName' => $request->input('lastname'),
+                    'email' => $request->input('email'),
+                    'password' =>  Hash::make($request->input('password')),
+                ]
+            );
 
-        return redirect('admin/usersadmin')->with('success', 'User updated successfully!');
+            return redirect('admin/usersadmin')->with('success', 'User updated successfully!');
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+            \Log::error($ex->getMessage());
+            return redirect()->back()->with('error','Greska pri azuriranju korisnika u bazu');
+        }
+        catch(\ErrorException $ex) {
+            \Log::error('Problem sa korisnicima!! '.$ex->getMessage());
+            return redirect()->back()->with('error','Doslo je do greske!');
+        }
     }
     public function updateAdmins(Request $request, $id)
     {
@@ -469,17 +596,27 @@ class AdminController extends Controller
             'email' => 'required',
             'password' => 'required',
         ]);
-        DB::table('admins')->where('id', $id)
-            ->update(
-            [
-                'name' => $request->input('name'),
-                'lastName' => $request->input('lastname'),
-                'email' => $request->input('email'),
-                'password' =>  Hash::make($request->input('password')),
-            ]
-        );
+        try{
+            DB::table('admins')->where('id', $id)
+                ->update(
+                [
+                    'name' => $request->input('name'),
+                    'lastName' => $request->input('lastname'),
+                    'email' => $request->input('email'),
+                    'password' =>  Hash::make($request->input('password')),
+                ]
+            );
 
-        return redirect('admin/admins')->with('success', 'Admin updated successfully!');
+            return redirect('admin/admins')->with('success', 'Admin updated successfully!');
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+            \Log::error($ex->getMessage());
+            return redirect()->back()->with('error','Greska pri azuriranju administratora u bazu');
+        }
+        catch(\ErrorException $ex) {
+            \Log::error('Problem sa administratorom!! '.$ex->getMessage());
+            return redirect()->back()->with('error','Doslo je do greske!');
+        }
     }
     public function updateComments(Request $request, $id)
     {
@@ -488,17 +625,27 @@ class AdminController extends Controller
             'deal' => 'required',
             'user' => 'required',
         ]);
-        DB::table('comments')->where('idComment', $id)
-            ->update(
-                [
-                    'content' => $request->input('content'),
-                    'idDeal' => $request->input('deal'),
-                    'idUser' => $request->input('user'),
-                    'ctime' =>  Carbon::now(),
-                ]
-            );
+        try{
+            DB::table('comments')->where('idComment', $id)
+                ->update(
+                    [
+                        'content' => $request->input('content'),
+                        'idDeal' => $request->input('deal'),
+                        'idUser' => $request->input('user'),
+                        'ctime' =>  Carbon::now(),
+                    ]
+                );
 
-        return redirect('admin/commentsadmin')->with('success', 'Comment updated successfully!');
+            return redirect('admin/commentsadmin')->with('success', 'Comment updated successfully!');
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+            \Log::error($ex->getMessage());
+            return redirect()->back()->with('error','Greska pri azuriranju komentara u bazu');
+        }
+        catch(\ErrorException $ex) {
+            \Log::error('Problem sa komentarima!! '.$ex->getMessage());
+            return redirect()->back()->with('error','Doslo je do greske!');
+        }
     }
 
     //------------------------------------------------------------------------------------//

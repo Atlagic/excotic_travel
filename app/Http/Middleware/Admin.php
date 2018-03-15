@@ -16,22 +16,10 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-//        if ( Auth::check() && Auth::user()->isAdmin() )
-//        {
-//            return $next($request);
-//        }
-//
-//        return redirect('admin.dashboard');
         $userId = \Auth::id();
         $user = User::find($userId);
         if($user->id != 1){
             echo "sorry";
         }
-        //if ( Auth::check() && Auth::user()->isAdmin() )
-       // {
-//            return $next($request);
-        //}
-
-        //return redirect('home');
     }
 }

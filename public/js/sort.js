@@ -19,16 +19,16 @@ $(document).ready(function(){
         event.preventDefault();
         var value = $('#search').val();
         var url = $(this).data("url");
-        if(value == ''){
-            $('#content').html("You must enter a name of city or a state");
-        }
+        // if(value == ''){
+        //     $('#content').html("You must enter a name of city or a state");
+        // }
         $.ajax({
             type:'get',
             dataType: 'html',
             url:url+'/'+value,
             success:function (data) {
                 $('#content').html(data);
-            },
+            }
         });
     });
 });

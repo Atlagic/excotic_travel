@@ -23,7 +23,7 @@
     <div class="col-md-10">
     {!! Form::open(['url' => 'deals', 'method' => 'get', 'class' => 'form-inline', 'role' => 'search']) !!}
     <div class="form-group mx-sm-3 mb-2">
-        {!! Form::text('search', Request::get('search'), ['id'=>'search', 'class' => 'form-control', 'placeholder' => 'Search state or city', 'required']) !!}
+        {!! Form::text('search', Request::get('search'), ['id'=>'search', 'class' => 'form-control', 'placeholder' => 'Search for state or city', 'required']) !!}
         {!! Form::submit('Search', ['class'=>'btn btn-primary search', 'data-url' => url('deals/search')]) !!}
     </div></div>
     {!! Form::close() !!}

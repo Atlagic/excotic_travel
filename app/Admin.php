@@ -62,7 +62,12 @@ class Admin extends Authenticatable
             ->get();
         return $result;
     }
-
+    public function getLogs(){
+        $result = DB::table('logs')
+            ->select('*')
+            ->get();
+        return $result;
+    }
 
 
     public function editD($id){

@@ -27,9 +27,14 @@ class ContactController extends Controller
           'subject' => $request->subject,
           'bodyMessage' => $request->message
         );
+        try {
+            Mail::to(Auth::user()->email)->send(new NewUserWelcome());
 
-        Mail::to(Auth::user()->email)->send(new NewUserWelcome());
-
-        return redirect('/contact')->with('success', 'We will send new dels to '.$request->input('contactmail').' Thanks '.Auth::user()->name.' for subscribe!');
-    }
+            return redirect('/contact')->with('success', 'We will send new dels to ' . $request->input('contactmail') . ' Thanks ' . Auth::user()->name . ' for subscribe!');
+        }
+        catch(\ErrorException $ex) {
+            \Log::error('Problem sa slanjem mejla!! '.$ex->getMessage());
+            return redirect()->back()->with('error','Doslo je do greske!');
+        }
+        }
 }

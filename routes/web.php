@@ -33,9 +33,10 @@ Route::get('/travelgallery', 'GalleryController@index');
 Route::get('/about', 'PagesController@about');
 
 Route::get('/contact', 'PagesController@contact');
+
 Route::post('contact', 'ContactController@sendEmail')->name('sendEmail');
 
-Route::post('/store', 'OfferController@store')->name('store');
+Route::post('/store', 'DealsController@store')->name('store');
 
 Route::post('/storecomment', 'OfferController@storeComment')->name('storecomment');
 //------------------------------------------------//

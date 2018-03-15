@@ -51,7 +51,7 @@
     <div class="row">
       <div class="col-md-12 text-center">
           @if (Auth::check())
-              {!! Form::open(['action' => 'OfferController@store', 'method' => 'post', 'class' => 'navbar-form', 'role' => 'reserve']) !!}
+              {!! Form::open(['action' => 'DealsController@store', 'method' => 'post', 'class' => 'navbar-form', 'role' => 'reserve']) !!}
               {{ csrf_field() }}
                   <div class="form-row">
                     <div class="col-md-4 formContainer">

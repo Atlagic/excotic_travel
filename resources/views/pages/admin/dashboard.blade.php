@@ -14,5 +14,37 @@
         </div>
     </div>
     <div class="row">
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fa fa-table"></i> User Activity</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>IP ADDRESS / NAME</th>
+                            <th>BROWSER</th>
+                            <th>TIME</th>
+                            <th>PAGE</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if(count($logs) > 0)
+                            @foreach($logs as $log)
+                                <tr>
+                                    <td>{{ $log->idLog }}</td>
+                                    <td>{{ $log->ipAddress }}</td>
+                                    <td>{{ $log->browser }}</td>
+                                    <td>{{ $log->time}}</td>
+                                    <td>{{ $log->page}}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

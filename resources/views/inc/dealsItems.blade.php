@@ -11,7 +11,7 @@
                 <a href="/deals/{{$deal->idDeal}}" class="btn btn-primary">{{$deal->price."€"}}</a>
               </div>
               <div class="card-footer text-muted">
-                <?php echo date("d/m/y H:i:s", $deal->date); ?>
+                {{ date("d/m/y H:i:s", $deal->date) }}
               </div>
             </div>
         @endforeach

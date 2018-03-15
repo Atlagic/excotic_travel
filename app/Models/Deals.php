@@ -32,8 +32,8 @@ class Deals extends Model
     public function search($value){
         $result = DB::table('deals')
             ->select('*')
-            ->where('place', 'like', '%' . $value . '%')
-            ->orderBy('date', 'asc')
-            ->paginate(4);
+            ->where('place', 'LIKE', '%'.$value.'%')
+            ->get();
         return $result;}
+
 }

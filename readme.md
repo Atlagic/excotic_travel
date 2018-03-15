@@ -1,51 +1,99 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+                       VISOKA ŠKOLA STRUKOVNIH STUDIJA ZA INFORMACIONE I KOMUNIKACIONE TEHNOLOGIJE
+<br/><br/><br/><br/><br/><br/><br/><br/>                      
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+<p align="center"><img src="http://www.ict.edu.rs/sites/default/files/public/logo_visoka_ict_skola_1.png"></p>
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
 
-## Laravel Sponsors
+                                      WEB PROGRAMIRANJE PHP2 DOKUMENTACIJA PROJEKTA
+                                        https://excotictravel.000webhostapp.com/
+ <br/><br/><br/>                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](http://patreon.com/taylorotwell):
 
-- **[Vehikl](http://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Styde](https://styde.net)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
+Student:
+Aleksandar Atlagić 93/14
 
-## Contributing
+                                                     Beograd 2018.
+                                                     
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+<br/><br/><br/><br/>   
+1.Opis funkcionalnosti<br/>
+2.Template<br/>
+3. Skica struktura stranica	<br/>
+4. Dijagram baze podataka	<br/>
+5. Klasni dijagram<br/>
+6.View-ovi
+ <br/><br/><br/><br/>
+<b>1.Opis funkcionalnosti</b>
+<br/><br/>
+-Forma za logovanje i registraciju se nalazi u desnom uglu trake za navigaciju. Funkcionalnosti logovanja i registracije su ostvarene preko Laravel autentikacije. Iz padajuće liste Login se moze izabrati forma za logovanje korisnika ili administratora premda je korišćen 'Multiple Authentication System'. Nakon uspešne registracije neautorizovan korisnik biva preusmeren na stranu za logovanje korisnika, a nakon uspešnog logovanja biva preusmeren na korisničku komandnu tablu gde se izveštava da je uspešno ulogovan. Administrator nakon uspešnog logovanja biva preusmeren na administratorsku komandnu tablu gde se izveštava da je uspešno ulogovan. Ukoliko neautorizovan korisnik pokuša da pristupi admin panelu preko url-a, on biva preusmeren na stranicu za logovanje, dok autorizovan biva preusmeren na korisničku komandnu tablu. (/app/Http/Controllers/Auth/..., /app/Http/middleware/..., /resources/views/auth..., /database/migrations/..., /config/auth.php, /app/Admin.php, /app/User.php
 
-## Security Vulnerabilities
+-Navigacioni meni se vidi na svakoj stranici i kreira se dinamički iz baze. (/resources/views/inc/navbar.blade.php)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+-Na strani Home se nalaze izdvojene ponude. Klikom na neku od ponuda otvara za posebna strana se detaljnim informacijama o traženoj destinaciji za koju se mogu dodavati komentari. (samo autorizovani korisnici, neautorizovani imaju samo mogućnost da čitaju komentare)
+(/app/Http/Controllers/OfferController.php, /app/Models/Offer.php, /resources/views/pages/home.blade.php, /resources/views/pages/offerItem.blade.php)
 
-## License
+-Na strani Gallery se nalazi galerija sa slikama destinacija. Klikom na 'thumbnail' sliku se učitava velika slika. (i velike i male slike se učitavaju iz baze) Funkcionalnost galerije je uradjena preko jQuery-a. (../public/js/gallery.js) Ostalo: (/app/Http/Controllers/GalleryController.php, /app/Models/Gallery.php, /resources/views/pages/travellgallery.blade.php)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+-Na strani Deals se nalaze izlistane ponude (sa Laravel paginaciom) svih destinacija sa kratkim opisom. Klikom na cenu određene destinacije se otvara posebna strana sa detaljnim informacijama o traženoj destinaciji kao i forma za rezervisanje (forma se prikazuje samo autorizovanim korisnicima). Nakon uspešne rezervacije podaci se upisuju u bazu i korisnik se izveštava o uspešnom rezervisanju. Pored toga. na strani deals se nalaze i forme za pretragu i filtriranje prema ceni (rastuće/opadajuće). Funkcionalnosti pretrage i filtriranja su uradjene preko Ajax-a. (../public/js/sort.js) Ostalo: (/app/Http/Controllers/DealsController.php, /app/Models/Deals.php, /resources/views/pages/deals.blade.php, /resources/views/pages/item.blade.php, /resources/views/inc/dealsItems.blade.php, /resources/views/layouts/sortTemplate.blade.php, /resources/views/pagination/default.blade.php), 
+
+-Na strani About se nalaze informacije o turističkoj agenciji kao i informacije o autoru sajta. (/resources/views/pages/about.blade.php)
+
+-Na strani contact se nalaze kontakt informacije turističke agencije kao i Google mapa. (/resources/views/pages/contact.blade.php)
+
+-U sredini futera se nalazi 'subscribe' forma koja šalje e-mail sa najnovijim ponudama autorizovanim korisnicima. Autorizovanom korisniku je automatski popunjeno polje za e-mail. Funkcionalnost slanja mejla ostvarena preko 'Laravel Mailable' metoda i https://mailtrap.io/. (/app/Http/Controllers/ContactController.php, /app/Mail/NewUserWelcome.php, /resources/views/emails/user/newuserwelcome.blade.php)
+
+-U admin panelu su izlistani svi podaci iz baze uključujući i statistiku o tome ko je (sa koje IP adrese), kada, sa kog pregledača pristupio odredjenoj strani. Uz to mogu se dodati podaci u bazu, izmeniti i izbrisati postojeći podaci iz tabela. Kod galerije, prilikom upload-a slika, ukoliko postoji slika sa istim imenom ona se brise i dodaje se nova (slike se dodaju i brisu i iz baze i sa servera). Sve slike se nalaze u Laravelovom storage filesystem-u (../public/storage/pictures, ../public/storage/smallPictures) Ostalo: /app/Http/Controllers/AdminController.php, /app/Admin.php, /resources/views/pages/admin/...)
+
+-Custom 404 page not found error page (/resources/views/errors/503.blade.php, /app/Http/Controllers/PageController.php)
+
+-Sve forme su validirane, svi izuzeci su obrađeni i zapisuju se u log file, ceo sadržaj sajta je dinamičan i povlači se iz baze podataka.
+<br/><br/><br/><br/> 
+-Use case dijagram 
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/pictures/UseCaseDijagram.jpg"/></p>
+<br/><br/><br/><br/> 
+-Koriščeni jezici: HTML5, CSS3, JavaScript, PHP <br/>
+-Korišćeni HTML framework: https://getbootstrap.com 
+-Koriščene biblioteke: https://code.jquery.com/jquery-3.2.1.slim.min.js, https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js,
+https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js
+<br/><br/><br/><br/> 
+<b>2.Template</b>
+<br/><br/> 
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/pictures/wireframe.jpg"/></p>
+<br/><br/> 
+<b>3. Skica struktura stranica</b>	<br/>
+<br/><br/> 
+-Deals admin
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/screenshots/dealsadmin.png"/></p>
+-Gallery admin
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/screenshots/galleryadmin.png"/></p>
+-Pages admin
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/screenshots/pagesadmin.png"/></p>
+-Reservations admin
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/screenshots/reservationsadmin.png"/></p>
+-Users admin
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/screenshots/usersadmin.png"/></p>
+-Admins admin
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/screenshots/admin.png"/></p>
+-Comments admin
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/screenshots/commentsadmin.png"/></p>
+<b>4. Dijagram baze podataka</b>	<br/>
+<br/><br/> 
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/pictures/database.jpg"/></p>
+<br/><br/><br/> 
+<b>5.Klasni dijagram</b> (kliknite na sliku kako biste uvećali)
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/pictures/ClassDiagram.jpg"/></p>
+<b>6.View-ovi</b> 
+<p align="center"><img src="https://excotictravel.000webhostapp.com/storage/pictures/views.jpg"/></p>
